@@ -116,7 +116,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Stan: "
+        android:text="Status: "
         android:layout_below="@+id/sizeTextView"
         android:textSize="25sp"
         android:layout_marginLeft="20dp"
@@ -130,13 +130,16 @@
         android:layout_alignBaseline="@+id/stateTextView"
         android:layout_toEndOf="@+id/stateTextView"
         android:id="@+id/state"
+        android:text="Nie rozpoczęto pobierania"
         />
 
-        <SeekBar
+        <ProgressBar
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/stateTextView"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="20dp"/>
+            android:layout_marginLeft="20dp"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:id="@+id/progressBar"/>
 
 </RelativeLayout>

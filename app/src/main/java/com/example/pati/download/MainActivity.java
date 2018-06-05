@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,12 +18,18 @@ protected static Button downloadInfoButton, downloadButton;
 protected static EditText adresUrlEditText, sizeEditText, typeEditText, amountOfBytesEditText, result, size;
     public static final String ACTION_NEW_MSG = "pl.froger.hello.broadcastreceiver.NEW_MSG";
     public static final String MSG_FIELD = "message";
+    protected static ProgressBar progressBar;
+    public static int sizeoffile;
+    Context context;
+    public  static  int currentPosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initialisationOfViews();
         settingListeners();
+        context= getApplicationContext();
+
     }
 
     public static  Broadcastreceiver broadcastreceiver =new Broadcastreceiver(){
@@ -32,6 +39,11 @@ protected static EditText adresUrlEditText, sizeEditText, typeEditText, amountOf
            amountOfBytesEditText.setText(String.valueOf(progressInfo.mDownloadedBytes));
            size.setText(String.valueOf(progressInfo.mSize));
            result.setText(String.valueOf(progressInfo.mResult));
+           sizeoffile=progressInfo.mSize;
+           currentPosition=progressInfo.mDownloadedBytes;
+           progressBar.setProgress(0);
+           progressBar.setMax(progressInfo.mSize);
+            progressBar.setProgress(currentPosition);
         }
 
         };
@@ -58,7 +70,7 @@ protected static EditText adresUrlEditText, sizeEditText, typeEditText, amountOf
         amountOfBytesEditText= (EditText) findViewById(R.id.amount_of_bytes);
         result= (EditText) findViewById(R.id.state);
         size=(EditText) findViewById(R.id.rozmiar);
-
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
     }
 
@@ -75,6 +87,7 @@ protected static EditText adresUrlEditText, sizeEditText, typeEditText, amountOf
             public void onClick(View v) {
                 DownloadingFileService.startService(MainActivity.this,0);
                 Toast.makeText(getApplicationContext(),"dziala", Toast.LENGTH_SHORT).show();
+                new Thread().start();
             }
         });
 
@@ -89,4 +102,6 @@ protected static EditText adresUrlEditText, sizeEditText, typeEditText, amountOf
         else
             return false;
     }
+
+
 }

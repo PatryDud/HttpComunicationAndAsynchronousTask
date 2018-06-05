@@ -122,10 +122,12 @@ public class DownloadingFileService extends IntentService {
             while ((len1 = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, len1);//Write new file
                 downloadedBytes+=len1;
-                progressInfo.mDownloadedBytes=downloadedBytes;
-                progressInfo.mSize=c.getContentLength();
-                zamiar.putExtra(INFO,progressInfo );
-                sendBroadcast(zamiar);
+
+                    progressInfo.mDownloadedBytes = downloadedBytes;
+                    progressInfo.mSize = c.getContentLength();
+                    zamiar.putExtra(INFO, progressInfo);
+                    sendBroadcast(zamiar);
+
             }
 
             progressInfo.mResult="pobieranie zakonczono";
