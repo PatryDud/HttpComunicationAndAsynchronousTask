@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 protected static Button downloadInfoButton, downloadButton;
-protected static EditText adresUrlEditText, sizeEditText, typeEditText, amountOfBytesEditText;
+protected static EditText adresUrlEditText, sizeEditText, typeEditText, amountOfBytesEditText, result, size;
     public static final String ACTION_NEW_MSG = "pl.froger.hello.broadcastreceiver.NEW_MSG";
     public static final String MSG_FIELD = "message";
     @Override
@@ -30,6 +30,8 @@ protected static EditText adresUrlEditText, sizeEditText, typeEditText, amountOf
             ProgressInfo progressInfo = intent.getExtras().getParcelable(DownloadingFileService.INFO);
 
            amountOfBytesEditText.setText(String.valueOf(progressInfo.mDownloadedBytes));
+           size.setText(String.valueOf(progressInfo.mSize));
+           result.setText(String.valueOf(progressInfo.mResult));
         }
 
         };
@@ -54,6 +56,9 @@ protected static EditText adresUrlEditText, sizeEditText, typeEditText, amountOf
         sizeEditText= (EditText) findViewById(R.id.size_of_file);
         typeEditText = (EditText) findViewById(R.id.type_of_file);
         amountOfBytesEditText= (EditText) findViewById(R.id.amount_of_bytes);
+        result= (EditText) findViewById(R.id.state);
+        size=(EditText) findViewById(R.id.rozmiar);
+
 
     }
 

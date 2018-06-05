@@ -95,12 +95,48 @@
         android:layout_toEndOf="@+id/pobierz_info_textView"
         android:id="@+id/amount_of_bytes"
         />
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rozmiar pliku: "
+        android:layout_below="@+id/pobierz_info_textView"
+        android:textSize="25sp"
+        android:layout_marginLeft="20dp"
+        android:textColor="#000010"
+        android:layout_marginTop="10dp"
+        android:id="@+id/sizeTextView"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/sizeTextView"
+        android:layout_toEndOf="@+id/pobierz_info_textView"
+        android:id="@+id/rozmiar"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stan: "
+        android:layout_below="@+id/sizeTextView"
+        android:textSize="25sp"
+        android:layout_marginLeft="20dp"
+        android:textColor="#000010"
+        android:layout_marginTop="10dp"
+        android:id="@+id/stateTextView"
+        />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/stateTextView"
+        android:layout_toEndOf="@+id/stateTextView"
+        android:id="@+id/state"
+        />
 
         <SeekBar
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/pobierz_info_textView"
-            android:layout_marginTop="10dp"/>
+            android:layout_below="@+id/stateTextView"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"/>
 
 </RelativeLayout>

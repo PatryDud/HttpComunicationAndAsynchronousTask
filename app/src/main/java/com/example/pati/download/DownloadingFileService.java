@@ -29,126 +29,12 @@ public class DownloadingFileService extends IntentService {
     private Context context;
     private String adres ="http://androhub.com/demo/demo.pdf";
     private String downloadFileName = "coscos";
-    private int counter;
     private int downloadedBytes=0;
-    private Timer timer;
 
-
-    /**
-     *
-     */
-    private TimerTask timerTask = new TimerTask() {
-        @Override
-        public void run() {
-            ProgressInfo progressInfo=new ProgressInfo(0);
-            Intent intent = new Intent(MainActivity.ACTION_NEW_MSG);
-
-
-
-            try {
-                URL url = new URL(adres);//Create Download URl
-                HttpURLConnection c = (HttpURLConnection) url.openConnection();//Open Url Connection
-                c.setRequestMethod("GET");//Set Request Method to "GET" since we are grtting data
-                c.connect();//connect the URL Connection
-
-                //If Connection response is not OK then show Logs
-                if (c.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    Log.e(TAG, "Server returned HTTP " + c.getResponseCode()
-                            + " " + c.getResponseMessage());
-
-                }
-
-
-                //Get File if SD card is present
-                if (new CheckForSDCard().isSDCardPresent()) {
-
-                    apkStorage = new File(
-                            Environment.getExternalStorageDirectory() + "/DirecotryDownload");
-                } else
-                    Toast.makeText(context, "Oops!! There is no SD Card.", Toast.LENGTH_SHORT).show();
-
-                //If File is not present create directory
-                if (!apkStorage.exists()) {
-                    apkStorage.mkdir();
-                    Log.e(TAG, "Directory Created.");
-                }
-
-                outputFile = new File(apkStorage, downloadFileName);//Create Output file in Main File
-
-                //Create New File if not present
-                if (!outputFile.exists()) {
-                    outputFile.createNewFile();
-                    Log.e(TAG, "File Created");
-                }
-
-                FileOutputStream fos = new FileOutputStream(outputFile);//Get OutputStream for NewFile Location
-
-                InputStream is = c.getInputStream();//Get InputStream for connection
-
-
-
-
-                byte[] buffer = new byte[1024];//Set buffer type
-                int pobrano= is.read(buffer,0,1024);//init length
-                while (pobrano !=0) {
-
-                    downloadedBytes+=pobrano;
-                    pobrano=is.read(buffer,0,1024);
-                    fos.write(buffer, 0, pobrano);//Write new file
-                    // progressInfo.mDownloadedBytes=downloadedBytes;
-                    // zamiar.putExtra(INFO,progressInfo );
-                }
-
-                //Close all connection after doing task
-                fos.close();
-                is.close();
-
-            } catch (Exception e) {
-
-                //Read exception if something went wrong
-                e.printStackTrace();
-                outputFile = null;
-                Log.e(TAG, "Download Error Exception " + e.getMessage());
-            }
-            progressInfo.mDownloadedBytes=downloadedBytes;
-            intent.putExtra(MainActivity.MSG_FIELD,progressInfo );
-            sendBroadcast(intent);
-
-        }
-
-
-
-
-
-    };
-
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        counter = 0;
-        timer = new Timer();
-        timer.scheduleAtFixedRate(timerTask, 0, 4000);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        timerTask.cancel();
-        timer.purge();
-    }
-
-    /**
-     *
-     */
     public DownloadingFileService(){
         super("DownloadingFileService");
 
     }
-
-
-
 
     private static final String AKCJA_ZADANIE1 =
             "com.example.pati.download.action.zadanie1";
@@ -185,14 +71,7 @@ public class DownloadingFileService extends IntentService {
     }
     private void wykonajZadanie(int parametr) {
         //kod faktycznie wykonujący zadanie...
-/**
- * czesc kodu do proby
- */
 
-
-/**
- *
- */
 
         try {
             URL url = new URL(adres);//Create Download URl
@@ -234,18 +113,24 @@ public class DownloadingFileService extends IntentService {
 
             InputStream is = c.getInputStream();//Get InputStream for connection
             Intent zamiar = new Intent(POWIADOMIENIE);
-
+            String result ="pobierania trwa";
             int downloadedBytes=0;
-            ProgressInfo progressInfo = new ProgressInfo(0);
+            ProgressInfo progressInfo = new ProgressInfo(0,c.getContentLength(), result);
             byte[] buffer = new byte[1024];//Set buffer type
             int len1 = 0;//init length
+
             while ((len1 = is.read(buffer)) != -1) {
                 fos.write(buffer, 0, len1);//Write new file
                 downloadedBytes+=len1;
-               progressInfo.mDownloadedBytes=downloadedBytes;
+                progressInfo.mDownloadedBytes=downloadedBytes;
+                progressInfo.mSize=c.getContentLength();
                 zamiar.putExtra(INFO,progressInfo );
                 sendBroadcast(zamiar);
             }
+
+            progressInfo.mResult="pobieranie zakonczono";
+            zamiar.putExtra(INFO,progressInfo );
+            sendBroadcast(zamiar);
 
             //Close all connection after doing task
             fos.close();

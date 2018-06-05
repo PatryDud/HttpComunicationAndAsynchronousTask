@@ -12,8 +12,10 @@ public class ProgressInfo implements Parcelable {
     public int mSize;
     public String mResult;
 
-    public ProgressInfo(int m){
+    public ProgressInfo(int m, int size, String result){
         this.mDownloadedBytes=m;
+        this.mResult=result;
+        this.mSize=size;
 
     }
     public ProgressInfo(){}
